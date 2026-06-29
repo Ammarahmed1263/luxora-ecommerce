@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { Instagram, Twitter, Facebook, Youtube, Mail, MapPin, Phone } from '@lucide/vue'
+import { Mail, MapPin, Phone } from '@lucide/vue'
+import {Facebook,Instagram,Linkedin,Youtube,Twitter} from "lucide-vue-next";
 
 const footerLinks = {
   shop: [

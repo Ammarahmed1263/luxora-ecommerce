@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import { Eye, EyeOff, ArrowRight, Loader2, Check } from '@lucide/vue'
+import { Eye, EyeOff, ArrowRight, Loader2, Check, Gift, Truck, BadgePercent, HeartHandshake } from 'lucide-vue-next'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -45,59 +45,97 @@ const onSubmit = form.handleSubmit(async (values) => {
     loading.value = false
   }
 })
+
+const benefits = [
+  { icon: Gift, text: 'Exclusive member discounts & early access' },
+  { icon: Truck, text: 'Free shipping on orders over $99' },
+  { icon: BadgePercent, text: 'Earn rewards on every purchase' },
+  { icon: HeartHandshake, text: 'Priority customer support 24/7' },
+]
 </script>
 
 <template>
-  <div class="min-h-screen flex gradient-hero">
-    <!-- Left decorative panel -->
-    <div class="hidden lg:flex lg:flex-1 relative overflow-hidden">
-      <div class="absolute inset-0 gradient-primary" />
-      <div class="absolute inset-0 flex flex-col items-center justify-center px-12 text-white">
-        <div class="blob absolute w-96 h-96 bg-white/10 top-1/4 left-1/4" />
-        <div class="relative z-10 max-w-sm text-center">
-          <div class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center mx-auto mb-8 backdrop-blur-sm">
-            <span class="font-bold text-2xl text-white">L</span>
+  <div class="min-h-screen flex bg-background">
+    <!-- Left: AI Hero Image Panel -->
+    <div class="hidden lg:flex lg:w-[52%] xl:w-[55%] relative overflow-hidden flex-shrink-0">
+      <!-- Background Image -->
+      <img
+        src="/auth-hero.png"
+        alt="Luxora premium shopping experience"
+        class="absolute inset-0 w-full h-full object-cover object-center"
+      />
+      <!-- Gradient Overlay -->
+      <div class="absolute inset-0" style="background: linear-gradient(135deg, oklch(0.18 0.06 295 / 0.85) 0%, oklch(0.28 0.09 295 / 0.68) 40%, oklch(0.12 0.04 280 / 0.60) 100%)" />
+
+      <!-- Content Overlay -->
+      <div class="relative z-10 flex flex-col justify-between p-10 w-full">
+        <!-- Logo -->
+        <RouterLink to="/" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-2xl flex items-center justify-center" style="background: oklch(1 0 0 / 0.15); border: 1px solid oklch(1 0 0 / 0.2); backdrop-filter: blur(8px);">
+            <span class="font-bold text-lg text-white">L</span>
           </div>
-          <h2 class="text-4xl font-bold mb-4 leading-tight">Join thousands of shoppers</h2>
-          <p class="text-white/70 text-lg leading-relaxed">
-            Discover curated products, track your orders, and enjoy a premium shopping experience.
+          <span class="font-bold text-xl text-white tracking-tight">Luxora</span>
+        </RouterLink>
+
+        <!-- Main Content -->
+        <div class="max-w-xs">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6" style="background: oklch(1 0 0 / 0.12); border: 1px solid oklch(1 0 0 / 0.2); backdrop-filter: blur(8px);">
+            <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span class="text-xs text-white/80 font-medium">Join 2 million+ shoppers</span>
+          </div>
+          <h2 class="text-4xl xl:text-5xl font-bold text-white leading-tight mb-4">
+            Start your<br />premium<br />
+            <span style="background: linear-gradient(135deg, oklch(0.88 0.06 50), oklch(0.78 0.12 85)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">journey</span>
+          </h2>
+          <p class="text-white/60 text-sm leading-relaxed mb-8">
+            Join Luxora and discover a world of curated premium products, exclusive deals, and seamless shopping.
           </p>
-          <div class="mt-10 space-y-3 text-left">
-            <div v-for="benefit in ['Free shipping on orders over $99', 'Exclusive member discounts', 'Wishlist & order tracking', 'Priority customer support']" :key="benefit" class="flex items-center gap-3 text-white/80">
-              <div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-                <Check :size="11" />
+
+          <!-- Benefits List -->
+          <div class="space-y-3.5">
+            <div
+              v-for="benefit in benefits"
+              :key="benefit.text"
+              class="flex items-center gap-3"
+            >
+              <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style="background: oklch(1 0 0 / 0.12); border: 1px solid oklch(1 0 0 / 0.15);">
+                <component :is="benefit.icon" :size="15" class="text-white/80" />
               </div>
-              {{ benefit }}
+              <span class="text-white/75 text-sm">{{ benefit.text }}</span>
             </div>
           </div>
         </div>
+
+        <!-- Bottom tagline -->
+        <p class="text-white/40 text-xs">© 2026 Luxora. All rights reserved.</p>
       </div>
     </div>
 
-    <!-- Form panel -->
-    <div class="flex-1 flex items-center justify-center p-6 lg:p-12 overflow-y-auto">
-      <div class="w-full max-w-md py-8">
-        <!-- Logo (mobile) -->
+    <!-- Right: Form Panel -->
+    <div class="flex-1 flex items-center justify-center p-6 lg:p-10 xl:p-12 overflow-y-auto">
+      <div class="w-full max-w-[420px] py-6">
+        <!-- Mobile Logo -->
         <RouterLink to="/" class="flex items-center gap-2 mb-8 lg:hidden">
           <div class="w-9 h-9 rounded-xl gradient-primary flex items-center justify-center">
             <span class="text-white font-bold">L</span>
           </div>
-          <span class="font-bold text-xl text-foreground">Lumina</span>
+          <span class="font-bold text-xl text-foreground">Luxora</span>
         </RouterLink>
 
-        <!-- Success state -->
+        <!-- Success State -->
         <Transition name="fade">
-          <div v-if="registered" class="text-center py-12">
-            <div class="w-16 h-16 rounded-full gradient-primary flex items-center justify-center mx-auto mb-6">
-              <Check :size="28" class="text-white" />
+          <div v-if="registered" class="text-center py-10">
+            <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg" style="background: linear-gradient(135deg, oklch(0.32 0.09 295), oklch(0.45 0.12 280)); box-shadow: 0 8px 24px oklch(0.32 0.09 295 / 0.35);">
+              <Check :size="32" class="text-white" />
             </div>
             <h2 class="text-2xl font-bold text-foreground mb-3">Account Created!</h2>
-            <p class="text-muted-foreground mb-8 max-w-xs mx-auto">
-              Please check your email to verify your account before signing in.
+            <p class="text-muted-foreground mb-8 max-w-xs mx-auto text-sm leading-relaxed">
+              We sent a verification link to your email. Please verify your account to start shopping.
             </p>
             <RouterLink
               to="/auth/login"
-              class="inline-flex items-center gap-2 px-6 py-3 rounded-xl gradient-primary text-white font-semibold hover:opacity-90 transition-all"
+              class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm hover:opacity-90 transition-all shadow-md"
+              style="background: linear-gradient(135deg, oklch(0.32 0.09 295), oklch(0.45 0.12 280));"
             >
               Go to Sign In <ArrowRight :size="16" />
             </RouterLink>
@@ -105,32 +143,49 @@ const onSubmit = form.handleSubmit(async (values) => {
         </Transition>
 
         <template v-if="!registered">
-          <div class="mb-8">
-            <h1 class="text-3xl font-bold text-foreground mb-2">Create account</h1>
-            <p class="text-muted-foreground">
+          <!-- Header -->
+          <div class="mb-7">
+            <p class="text-sm text-muted-foreground font-medium uppercase tracking-widest mb-3">Get started</p>
+            <h1 class="text-3xl xl:text-4xl font-bold text-foreground mb-2 tracking-tight">Create your<br />account</h1>
+            <p class="text-muted-foreground text-sm mt-3">
               Already have an account?
-              <RouterLink to="/auth/login" class="text-primary font-semibold hover:underline">
+              <RouterLink to="/auth/login" class="font-semibold underline underline-offset-2" style="color: oklch(0.45 0.12 295);">
                 Sign in
               </RouterLink>
             </p>
           </div>
 
-          <form @submit="onSubmit" class="space-y-4">
-            <div class="grid grid-cols-2 gap-4">
+          <!-- Form -->
+          <form @submit="onSubmit" class="space-y-4" novalidate>
+            <div class="grid grid-cols-2 gap-3">
               <FormField v-slot="{ componentField }" name="firstName">
                 <FormItem>
-                  <FormLabel class="text-sm font-medium">First name</FormLabel>
+                  <FormLabel class="text-sm font-semibold text-foreground">First name</FormLabel>
                   <FormControl>
-                    <Input v-bind="componentField" placeholder="Ali" autocomplete="given-name" class="h-11 rounded-xl text-sm" />
+                    <Input
+                      v-bind="componentField"
+                      id="register-first-name"
+                      placeholder="Ali"
+                      autocomplete="given-name"
+                      class="h-11 rounded-xl text-sm"
+                      style="background: oklch(0.975 0.006 85); border-color: oklch(0.88 0.008 85);"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               </FormField>
               <FormField v-slot="{ componentField }" name="lastName">
                 <FormItem>
-                  <FormLabel class="text-sm font-medium">Last name</FormLabel>
+                  <FormLabel class="text-sm font-semibold text-foreground">Last name</FormLabel>
                   <FormControl>
-                    <Input v-bind="componentField" placeholder="Hassan" autocomplete="family-name" class="h-11 rounded-xl text-sm" />
+                    <Input
+                      v-bind="componentField"
+                      id="register-last-name"
+                      placeholder="Hassan"
+                      autocomplete="family-name"
+                      class="h-11 rounded-xl text-sm"
+                      style="background: oklch(0.975 0.006 85); border-color: oklch(0.88 0.008 85);"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -139,9 +194,17 @@ const onSubmit = form.handleSubmit(async (values) => {
 
             <FormField v-slot="{ componentField }" name="email">
               <FormItem>
-                <FormLabel class="text-sm font-medium">Email address</FormLabel>
+                <FormLabel class="text-sm font-semibold text-foreground">Email address</FormLabel>
                 <FormControl>
-                  <Input v-bind="componentField" type="email" placeholder="you@example.com" autocomplete="email" class="h-11 rounded-xl text-sm" />
+                  <Input
+                    v-bind="componentField"
+                    id="register-email"
+                    type="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    class="h-11 rounded-xl text-sm"
+                    style="background: oklch(0.975 0.006 85); border-color: oklch(0.88 0.008 85);"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -149,9 +212,19 @@ const onSubmit = form.handleSubmit(async (values) => {
 
             <FormField v-slot="{ componentField }" name="phone">
               <FormItem>
-                <FormLabel class="text-sm font-medium">Phone <span class="text-muted-foreground font-normal">(optional)</span></FormLabel>
+                <FormLabel class="text-sm font-semibold text-foreground">
+                  Phone <span class="text-muted-foreground font-normal text-xs">(optional)</span>
+                </FormLabel>
                 <FormControl>
-                  <Input v-bind="componentField" type="tel" placeholder="+201012345678" autocomplete="tel" class="h-11 rounded-xl text-sm" />
+                  <Input
+                    v-bind="componentField"
+                    id="register-phone"
+                    type="tel"
+                    placeholder="+20 1012 345 678"
+                    autocomplete="tel"
+                    class="h-11 rounded-xl text-sm"
+                    style="background: oklch(0.975 0.006 85); border-color: oklch(0.88 0.008 85);"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -159,12 +232,25 @@ const onSubmit = form.handleSubmit(async (values) => {
 
             <FormField v-slot="{ componentField }" name="password">
               <FormItem>
-                <FormLabel class="text-sm font-medium">Password</FormLabel>
+                <FormLabel class="text-sm font-semibold text-foreground">Password</FormLabel>
                 <FormControl>
                   <div class="relative">
-                    <Input v-bind="componentField" :type="showPassword ? 'text' : 'password'" placeholder="••••••••" autocomplete="new-password" class="h-11 rounded-xl pr-12 text-sm" />
-                    <button type="button" @click="showPassword = !showPassword" class="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground transition-colors" :aria-label="showPassword ? 'Hide' : 'Show'">
-                      <component :is="showPassword ? EyeOff : Eye" :size="17" />
+                    <Input
+                      v-bind="componentField"
+                      id="register-password"
+                      :type="showPassword ? 'text' : 'password'"
+                      placeholder="••••••••"
+                      autocomplete="new-password"
+                      class="h-11 rounded-xl pr-12 text-sm"
+                      style="background: oklch(0.975 0.006 85); border-color: oklch(0.88 0.008 85);"
+                    />
+                    <button
+                      type="button"
+                      @click="showPassword = !showPassword"
+                      class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+                      :aria-label="showPassword ? 'Hide password' : 'Show password'"
+                    >
+                      <component :is="showPassword ? EyeOff : Eye" :size="16" />
                     </button>
                   </div>
                 </FormControl>
@@ -174,12 +260,24 @@ const onSubmit = form.handleSubmit(async (values) => {
 
             <FormField v-slot="{ componentField }" name="confirmPassword">
               <FormItem>
-                <FormLabel class="text-sm font-medium">Confirm password</FormLabel>
+                <FormLabel class="text-sm font-semibold text-foreground">Confirm password</FormLabel>
                 <FormControl>
                   <div class="relative">
-                    <Input v-bind="componentField" :type="showConfirm ? 'text' : 'password'" placeholder="••••••••" autocomplete="new-password" class="h-11 rounded-xl pr-12 text-sm" />
-                    <button type="button" @click="showConfirm = !showConfirm" class="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground transition-colors">
-                      <component :is="showConfirm ? EyeOff : Eye" :size="17" />
+                    <Input
+                      v-bind="componentField"
+                      id="register-confirm-password"
+                      :type="showConfirm ? 'text' : 'password'"
+                      placeholder="••••••••"
+                      autocomplete="new-password"
+                      class="h-11 rounded-xl pr-12 text-sm"
+                      style="background: oklch(0.975 0.006 85); border-color: oklch(0.88 0.008 85);"
+                    />
+                    <button
+                      type="button"
+                      @click="showConfirm = !showConfirm"
+                      class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      <component :is="showConfirm ? EyeOff : Eye" :size="16" />
                     </button>
                   </div>
                 </FormControl>
@@ -188,16 +286,21 @@ const onSubmit = form.handleSubmit(async (values) => {
             </FormField>
 
             <FormField v-slot="{ value, handleChange }" name="acceptTerms">
-              <FormItem class="flex items-start gap-3 space-y-0">
+              <FormItem class="flex items-start gap-3 space-y-0 pt-1">
                 <FormControl class="mt-0.5">
-                  <Checkbox :checked="value" @update:checked="handleChange" id="terms" class="data-[state=checked]:bg-primary data-[state=checked]:border-primary" />
+                  <Checkbox
+                    :checked="value"
+                    @update:checked="handleChange"
+                    id="terms"
+                    class="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                  />
                 </FormControl>
                 <div>
                   <FormLabel for="terms" class="text-sm font-normal cursor-pointer text-muted-foreground leading-relaxed">
                     I agree to the
-                    <a href="#" class="text-primary hover:underline font-medium">Terms of Service</a>
+                    <a href="#" class="font-semibold underline underline-offset-2" style="color: oklch(0.45 0.12 295);">Terms of Service</a>
                     and
-                    <a href="#" class="text-primary hover:underline font-medium">Privacy Policy</a>
+                    <a href="#" class="font-semibold underline underline-offset-2" style="color: oklch(0.45 0.12 295);">Privacy Policy</a>
                   </FormLabel>
                   <FormMessage />
                 </div>
@@ -206,8 +309,12 @@ const onSubmit = form.handleSubmit(async (values) => {
 
             <button
               type="submit"
+              id="register-submit"
               :disabled="loading"
-              class="w-full flex items-center justify-center gap-2 h-12 rounded-xl gradient-primary text-white font-semibold shadow-md hover:opacity-90 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0 transition-all duration-200 mt-2"
+              class="w-full flex items-center justify-center gap-2.5 h-12 rounded-xl text-white font-semibold text-sm shadow-md disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 mt-2"
+              style="background: linear-gradient(135deg, oklch(0.32 0.09 295), oklch(0.45 0.12 280)); box-shadow: 0 4px 14px oklch(0.32 0.09 295 / 0.35);"
+              onmouseenter="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 6px 20px oklch(0.32 0.09 295 / 0.45)'"
+              onmouseleave="this.style.transform=''; this.style.boxShadow='0 4px 14px oklch(0.32 0.09 295 / 0.35)'"
             >
               <Loader2 v-if="loading" :size="18" class="animate-spin" />
               <template v-else>

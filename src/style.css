@@ -58,11 +58,11 @@
   --radius: 0.75rem;
 
   /* Background: Warm White / Ivory */
-  --background: oklch(0.985 0.004 85);
+  --background: #FAF7F1;
   --foreground: oklch(0.14 0.02 280);
 
   /* Card: slightly elevated warm card */
-  --card: oklch(0.975 0.006 85);
+  --card: #fff;
   --card-foreground: oklch(0.14 0.02 280);
 
   /* Popover */

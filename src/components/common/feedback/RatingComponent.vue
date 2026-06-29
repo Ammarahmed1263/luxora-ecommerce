@@ -52,10 +52,10 @@ const iconSize = computed(() => ({ sm: 12, md: 15, lg: 18 }[props.size]))
       </span>
     </div>
     <span v-if="showCount && count !== undefined" class="text-xs text-muted-foreground font-medium">
-      {{ average.toFixed(1) }} ({{ count.toLocaleString() }})
+      {{ average?.toFixed(2) }} ({{ count.toLocaleString() }})
     </span>
     <span v-else-if="average > 0" class="text-xs text-muted-foreground font-medium">
-      {{ average.toFixed(1) }}
+      {{ average?.toFixed(2) }}
     </span>
   </div>
 </template>

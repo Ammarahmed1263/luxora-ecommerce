@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Tag, X } from '@lucide/vue'
+import { Tag, X } from 'lucide-vue-next'
+import { RouterLink } from 'vue-router'
+
+const props = withDefaults(defineProps<{
+  showCheckoutButton?: boolean
+}>(), {
+  showCheckoutButton: true,
+})
 import PriceComponent from './PriceComponent.vue'
 import { Separator } from '@/components/ui/separator'
 import { useCartStore } from '@/stores/cart.store'
@@ -93,6 +100,15 @@ async function removeCoupon() {
       </button>
     </div>
 
+
+    <RouterLink
+      v-if="props.showCheckoutButton"
+      to="/checkout"
+      class="block w-full text-center py-3 rounded-xl text-white font-semibold text-sm transition-all duration-200 mt-2"
+      style="background: linear-gradient(135deg, oklch(0.32 0.09 295), oklch(0.45 0.12 280)); box-shadow: 0 4px 14px oklch(0.32 0.09 295 / 0.3);"
+    >
+      Proceed to Checkout
+    </RouterLink>
     <slot name="actions" />
   </div>
 </template>

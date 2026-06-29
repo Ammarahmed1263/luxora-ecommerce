@@ -2,12 +2,12 @@
 import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { ShoppingCart, Eye } from '@lucide/vue'
-import PriceComponent from './PriceComponent.vue'
-import WishlistButton from './WishlistButton.vue'
 import RatingComponent from '@/components/common/feedback/RatingComponent.vue'
 import { useCartStore } from '@/stores/cart.store'
 import { useToast } from '@/composables/useToast'
 import type { Product } from '@/types/product.types'
+import PriceComponent from '../commerce/PriceComponent.vue'
+import WishlistButton from '../commerce/WishlistButton.vue'
 
 const props = defineProps<{
   product: Product
@@ -35,7 +35,7 @@ async function addToCart() {
 
 <template>
   <div
-    class="group relative bg-card rounded-2xl overflow-hidden card-elevated card-hover border border-border/50 flex"
+    class="group relative  bg-card rounded-2xl overflow-hidden card-elevated card-hover border border-border/50 flex"
     :class="orientation === 'horizontal' ? 'flex-row' : 'flex-col'"
   >
     <!-- Image Area -->
