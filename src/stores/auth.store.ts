@@ -37,8 +37,15 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchMe() {
     if (!token.value) return
-    const res = await usersService.getMe()
-    user.value = res.data.data.user as AuthUser
+    try {
+      const res = await usersService.getMe()
+      user.value = res.data.data.user as AuthUser
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        clearAuth()
+      }
+      throw err
+    }
   }
 
   function clearAuth() {

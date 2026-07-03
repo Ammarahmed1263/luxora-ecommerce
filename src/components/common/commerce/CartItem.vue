@@ -1,41 +1,44 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
-import { Trash2 } from '@lucide/vue'
-import QuantitySelector from './QuantitySelector.vue'
-import PriceComponent from './PriceComponent.vue'
-import { useCartStore } from '@/stores/cart.store'
-import type { CartItem as CartItemType } from '@/types/cart.types'
+import { ref } from "vue";
+import { RouterLink } from "vue-router";
+import { Trash2 } from "@lucide/vue";
+import QuantitySelector from "./QuantitySelector.vue";
+import PriceComponent from "./PriceComponent.vue";
+import { useCartStore } from "@/stores/cart.store";
+import type { CartItem as CartItemType } from "@/types/cart.types";
 
 const props = defineProps<{
-  item: CartItemType
-}>()
+  item: CartItemType;
+}>();
 
-const cartStore = useCartStore()
-const updating = ref(false)
+const cartStore = useCartStore();
+const updating = ref(false);
 
 async function updateQty(qty: number) {
-  if (updating.value) return
-  updating.value = true
+  if (updating.value) return;
+  updating.value = true;
   try {
-    await cartStore.updateItem(props.item.id, qty)
+    await cartStore.updateItem(props.item.id, qty);
   } finally {
-    updating.value = false
+    updating.value = false;
   }
 }
 
 async function remove() {
-  await cartStore.removeItem(props.item.id)
+  await cartStore.removeItem(props.item.id);
 }
 </script>
 
 <template>
-  <div class="flex items-start gap-4 py-4 border-b border-border/60 last:border-0">
-    <!-- Product image -->
-    <RouterLink :to="`/products/${item.product.slug}`" class="flex-shrink-0">
-      <div class="w-20 h-20 rounded-xl overflow-hidden bg-muted/30 border border-border/50">
+  <div
+    class="flex items-start gap-4 py-4 border-b border-border/60 last:border-0"
+  >
+    <RouterLink :to="`/products/${item.product.slug}`" class="shrink-0">
+      <div
+        class="w-20 h-20 rounded-xl overflow-hidden bg-muted/30 border border-border/50"
+      >
         <img
-          :src="item.product.thumbnail"
+          :src="item.product.thumbnail?.url"
           :alt="item.product.name"
           loading="lazy"
           class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
@@ -43,7 +46,6 @@ async function remove() {
       </div>
     </RouterLink>
 
-    <!-- Info -->
     <div class="flex-1 min-w-0">
       <RouterLink
         :to="`/products/${item.product.slug}`"
@@ -71,7 +73,10 @@ async function remove() {
       </div>
     </div>
 
-    <!-- Total price -->
-    <PriceComponent :amount="item.totalPrice" size="sm" class="flex-shrink-0 font-bold" />
+    <PriceComponent
+      :amount="item.totalPrice"
+      size="sm"
+      class="shrink-0 font-bold"
+    />
   </div>
 </template>

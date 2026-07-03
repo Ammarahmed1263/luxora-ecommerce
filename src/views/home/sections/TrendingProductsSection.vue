@@ -14,17 +14,12 @@ const { data, isLoading } = useQuery({
 })
 
 const trendingProducts = computed(() => {
-  const backendProducts = data.value?.data.data.products
-  if (!backendProducts || backendProducts.length === 0) {
-    // Show a mix of general dummy products for variety
-    return dummyProducts.slice(0, 4)
-  }
-  return backendProducts
+  return data.value?.data.data.products ?? []
 })
 </script>
 
 <template>
-  <section class="py-20 container mx-auto px-4 lg:px-8">
+  <section v-if="trendingProducts.length > 0 || isLoading" class="py-20 container mx-auto px-4 lg:px-8">
     <div class="flex items-end justify-between mb-10">
       <div>
         <p class="text-sm font-semibold text-primary/70 uppercase tracking-widest mb-2">What's hot</p>

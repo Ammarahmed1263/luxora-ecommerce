@@ -40,7 +40,6 @@ const items = computed(() => cartStore.items)
       />
 
       <div v-else class="grid lg:grid-cols-3 gap-8 xl:gap-12">
-        <!-- Items list -->
         <div class="lg:col-span-2 space-y-4">
           <CartItem
             v-for="item in items"
@@ -49,7 +48,6 @@ const items = computed(() => cartStore.items)
           />
         </div>
 
-        <!-- Summary -->
         <div class="lg:col-span-1">
           <div class="sticky top-24">
             <CartSummary />

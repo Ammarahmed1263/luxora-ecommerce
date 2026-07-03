@@ -31,8 +31,8 @@ function goToCheckout() {
 
 <template>
   <Sheet :open="uiStore.cartSheetOpen" @update:open="(v) => !v && uiStore.closeCartSheet()">
-    <SheetContent side="right" class="w-full sm:w-[440px] p-0 flex flex-col">
-      <SheetHeader class="px-6 py-5 border-b border-border/60">
+    <SheetContent side="right" :show-close-button="false" class="w-full sm:w-110 p-0 flex flex-col">
+      <SheetHeader class="px-6 py-5 border-b border-border/60" >
         <div class="flex items-center justify-between">
           <SheetTitle class="flex items-center gap-2.5 text-lg font-bold">
             <div class="w-8 h-8 rounded-xl gradient-primary flex items-center justify-center">
@@ -52,20 +52,18 @@ function goToCheckout() {
         <SheetDescription class="sr-only">Your shopping cart</SheetDescription>
       </SheetHeader>
 
-      <!-- Empty cart -->
       <template v-if="cartStore.items.length === 0">
         <div class="flex-1 flex items-center justify-center">
           <EmptyState
             title="Your cart is empty"
             description="Discover products and add them to your cart."
-            icon="cart"
+            icon="shopping-bag"
             action-label="Start Shopping"
             :on-action="() => { uiStore.closeCartSheet(); router.push('/products') }"
           />
         </div>
       </template>
 
-      <!-- Cart items + summary -->
       <template v-else>
         <ScrollArea class="flex-1 px-6">
           <div class="py-2">
@@ -85,7 +83,7 @@ function goToCheckout() {
                   @click="goToCheckout"
                   class="w-full flex items-center justify-center gap-2 py-3.5 font-semibold rounded-xl gradient-primary text-white shadow-md hover:opacity-90 hover:-translate-y-0.5 transition-all duration-200"
                 >
-                  Checkout <ArrowRight :size="16" />
+                  Proceed to checkout <ArrowRight :size="16" />
                 </button>
                 <RouterLink
                   to="/cart"

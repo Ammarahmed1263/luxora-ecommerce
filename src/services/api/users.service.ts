@@ -5,13 +5,13 @@ import type { Order } from '@/types/order.types'
 
 export const usersService = {
   getMe: () =>
-    http.get<ApiResponse<{ user: UserProfile }>>('/users/me'),
+    http.get<ApiResponse<{ user: UserProfile }>>('/auth/me'),
 
   updateMe: (payload: UpdateProfilePayload) =>
-    http.patch<ApiResponse<{ user: UserProfile }>>('/users/me', payload),
+    http.patch<ApiResponse<{ user: UserProfile }>>('/users/profile', payload),
 
   uploadAvatar: (formData: FormData) =>
-    http.post<ApiResponse<{ avatar: string }>>('/users/me/avatar', formData, {
+    http.patch<ApiResponse<{ avatar: string }>>('/users/avatar', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     }),
 
@@ -19,7 +19,7 @@ export const usersService = {
     http.delete<ApiResponse<null>>('/users/me/avatar'),
 
   getMyOrders: (params?: { page?: number; limit?: number; status?: string }) =>
-    http.get<PaginatedResponse<{ orders: Order[] }>>('/users/me/orders', { params }),
+    http.get<PaginatedResponse<{ orders: Order[] }>>('/orders', { params }),
 
   getMyReviews: (params?: { page?: number; limit?: number }) =>
     http.get<PaginatedResponse<{ reviews: Review[] }>>('/users/me/reviews', { params }),

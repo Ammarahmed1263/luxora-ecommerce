@@ -9,9 +9,7 @@
       class="rounded-2xl overflow-hidden border"
       style="border-color: oklch(0.88 0.008 85);"
     >
-      <!-- Image skeleton -->
       <div class="aspect-square bg-muted animate-pulse" />
-      <!-- Content skeleton -->
       <div class="p-4 space-y-2.5">
         <div class="h-3 bg-muted rounded-full animate-pulse w-1/3" />
         <div class="h-4 bg-muted rounded-full animate-pulse w-4/5" />

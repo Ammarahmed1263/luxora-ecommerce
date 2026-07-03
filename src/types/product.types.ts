@@ -1,17 +1,21 @@
-export interface ProductImage {
+export interface CloudinaryImage {
   url: string
-  alt: string
+  publicId?: string
+}
+
+export interface ProductImage extends CloudinaryImage {
+  alt?: string
   order?: number
 }
 
 export interface ProductCategory {
-  id: string
+  _id: string
   name: string
   slug: string
 }
 
 export interface ProductVendor {
-  id: string
+  _id: string
   storeName: string
   rating?: number
 }
@@ -23,13 +27,13 @@ export interface ProductRating {
 }
 
 export interface Product {
-  id: string
+  _id: string
   name: string
   slug: string
   description: string
   price: number
   currency: string
-  thumbnail: string
+  thumbnail: CloudinaryImage
   images: ProductImage[]
   category: ProductCategory
   vendor: ProductVendor
@@ -45,10 +49,10 @@ export interface Product {
 }
 
 export interface Category {
-  id: string
+  _id: string
   name: string
   slug: string
-  image: string
+  image: CloudinaryImage
   parent: string | null
   isFeatured: boolean
   productCount: number
@@ -57,10 +61,10 @@ export interface Category {
 }
 
 export interface CategoryChild {
-  id: string
+  _id: string
   name: string
   slug: string
-  image: string
+  image: CloudinaryImage
   productCount: number
 }
 

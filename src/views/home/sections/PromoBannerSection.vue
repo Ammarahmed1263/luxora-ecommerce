@@ -5,21 +5,17 @@ import { ArrowRight, Sparkles } from '@lucide/vue'
 
 <template>
   <section class="py-12 container mx-auto px-4 lg:px-8">
-    <div class="relative rounded-3xl overflow-hidden min-h-[420px] flex items-center justify-start p-8 md:p-16 card-elevated">
-      <!-- Background Image -->
+    <div class="relative rounded-3xl overflow-hidden min-h-105 flex items-center justify-start p-8 md:p-16 card-elevated">
       <img
         src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&h=800&fit=crop"
         alt="Premium lifestyle banner"
         class="absolute inset-0 w-full h-full object-cover"
       />
 
-      <!-- Dark Gradient Overlay -->
-      <div class="absolute inset-0 bg-gradient-to-r from-foreground via-foreground/75 to-transparent" />
+      <div class="absolute inset-0 bg-linear-to-r from-foreground via-foreground/75 to-transparent" />
 
-      <!-- Decorative mesh gradient blob -->
       <div class="blob absolute w-80 h-80 bg-accent/20 right-10 top-10 pointer-events-none" />
 
-      <!-- Content -->
       <div class="relative z-10 max-w-lg flex flex-col gap-6 text-white">
         <div class="inline-flex w-fit items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold uppercase tracking-wider">
           <Sparkles :size="12" class="text-accent" /> Exclusive Deal

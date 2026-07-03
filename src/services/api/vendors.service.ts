@@ -8,7 +8,7 @@ export const vendorsService = {
     http.get<ApiResponse<{ vendor: Vendor }>>(`/vendors/${storeSlug}`),
 
   getStoreProducts: (storeSlug: string, params?: { page?: number; limit?: number }) =>
-    http.get<PaginatedResponse<{ products: Product[] }>>(`/vendors/${storeSlug}/products`, { params }),
+    http.get<PaginatedResponse<{ products: Product[] }>>(`/products`, { params: { vendorSlug: storeSlug, ...params } }),
 
   registerAsVendor: (formData: FormData) =>
     http.post<ApiResponse<{ vendor: Vendor }>>('/vendors/register', formData, {
@@ -16,10 +16,10 @@ export const vendorsService = {
     }),
 
   getMyStore: () =>
-    http.get<ApiResponse<{ vendor: Vendor }>>('/vendors/me'),
+    http.get<ApiResponse<{ vendor: Vendor }>>('/vendors/dashboard/me'),
 
   updateMyStore: (formData: FormData) =>
-    http.patch<ApiResponse<{ vendor: Vendor }>>('/vendors/me', formData, {
+    http.patch<ApiResponse<{ vendor: Vendor }>>('/vendors/profile/me', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     }),
 }

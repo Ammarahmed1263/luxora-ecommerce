@@ -24,5 +24,5 @@ export const authService = {
     http.post<ApiResponse<null>>('/auth/resend-verification', { email }),
 
   changePassword: (payload: ChangePasswordPayload) =>
-    http.patch<ApiResponse<null>>('/auth/change-password', payload),
+    http.patch<ApiResponse<null>>('/users/password', payload),
 }

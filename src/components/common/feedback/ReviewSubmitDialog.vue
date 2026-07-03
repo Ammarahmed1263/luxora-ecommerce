@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Star, X } from 'lucide-vue-next'
+import { ref } from "vue";
+import { Star, X } from "lucide-vue-next";
 
 const props = defineProps<{
-  isOpen: boolean
-  productName: string
-}>()
+  isOpen: boolean;
+  productName: string;
+}>();
 
 const emit = defineEmits<{
-  (e: 'close'): void
-  (e: 'submit', data: { rating: number; title: string; body: string }): void
-}>()
+  (e: "close"): void;
+  (e: "submit", data: { rating: number; title: string; body: string }): void;
+}>();
 
-const rating = ref(5)
-const hoverRating = ref(0)
-const title = ref('')
-const body = ref('')
+const rating = ref(5);
+const hoverRating = ref(0);
+const title = ref("");
+const body = ref("");
 
 function handleSubmit() {
-  if (!body.value.trim() || !title.value.trim()) return
-  emit('submit', {
+  if (!body.value.trim() || !title.value.trim()) return;
+  emit("submit", {
     rating: rating.value,
     title: title.value.trim(),
     body: body.value.trim(),
-  })
+  });
   // reset
-  title.value = ''
-  body.value = ''
-  rating.value = 5
+  title.value = "";
+  body.value = "";
+  rating.value = 5;
 }
 </script>
 
@@ -37,17 +37,14 @@ function handleSubmit() {
       v-if="props.isOpen"
       class="fixed inset-0 z-50 flex items-center justify-center p-4"
     >
-      <!-- Backdrop -->
       <div
         @click="emit('close')"
         class="absolute inset-0 bg-black/45 backdrop-blur-sm"
       />
 
-      <!-- Content -->
       <div
-        class="relative bg-white rounded-[2rem] max-w-lg w-full p-6 md:p-8 shadow-xl border border-border/50 z-10 animate-in scale-in duration-200"
+        class="relative bg-white rounded-4xl max-w-lg w-full p-6 md:p-8 shadow-xl border border-border/50 z-10 animate-in scale-in duration-200"
       >
-        <!-- Close Button -->
         <button
           @click="emit('close')"
           class="absolute top-5 right-5 p-1.5 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
@@ -56,17 +53,20 @@ function handleSubmit() {
           <X :size="18" />
         </button>
 
-        <!-- Header -->
         <div class="mb-6">
-          <h2 class="text-xl font-extrabold text-foreground tracking-tight">Write a Review</h2>
-          <p class="text-xs text-muted-foreground mt-1">for {{ props.productName }}</p>
+          <h2 class="text-xl font-extrabold text-foreground tracking-tight">
+            Write a Review
+          </h2>
+          <p class="text-xs text-muted-foreground mt-1">
+            for {{ props.productName }}
+          </p>
         </div>
 
-        <!-- Form -->
         <form @submit.prevent="handleSubmit" class="space-y-5">
-          <!-- Rating Selector -->
           <div class="space-y-2">
-            <label class="text-xs font-extrabold uppercase tracking-wider text-muted-foreground block">
+            <label
+              class="text-xs font-extrabold uppercase tracking-wider text-muted-foreground block"
+            >
               Overall Rating
             </label>
             <div class="flex items-center gap-1.5">
@@ -81,20 +81,34 @@ function handleSubmit() {
               >
                 <Star
                   :size="28"
-                  :fill="(hoverRating ? i <= hoverRating : i <= rating) ? 'currentColor' : 'none'"
-                  :class="(hoverRating ? i <= hoverRating : i <= rating) ? 'text-amber-400' : 'text-muted-foreground/30'"
+                  :fill="
+                    (hoverRating ? i <= hoverRating : i <= rating)
+                      ? 'currentColor'
+                      : 'none'
+                  "
+                  :class="
+                    (hoverRating ? i <= hoverRating : i <= rating)
+                      ? 'text-amber-400'
+                      : 'text-muted-foreground/30'
+                  "
                   class="stroke-[2.5]"
                 />
               </button>
               <span class="text-xs font-bold text-muted-foreground ml-2">
-                {{ ['Select', 'Poor', 'Fair', 'Average', 'Good', 'Stunning'][hoverRating || rating] }}
+                {{
+                  ["Select", "Poor", "Fair", "Average", "Good", "Stunning"][
+                    hoverRating || rating
+                  ]
+                }}
               </span>
             </div>
           </div>
 
-          <!-- Title Input -->
           <div class="space-y-2">
-            <label for="review-title" class="text-xs font-extrabold uppercase tracking-wider text-muted-foreground block">
+            <label
+              for="review-title"
+              class="text-xs font-extrabold uppercase tracking-wider text-muted-foreground block"
+            >
               Review Title
             </label>
             <input
@@ -107,9 +121,11 @@ function handleSubmit() {
             />
           </div>
 
-          <!-- Body Textarea -->
           <div class="space-y-2">
-            <label for="review-body" class="text-xs font-extrabold uppercase tracking-wider text-muted-foreground block">
+            <label
+              for="review-body"
+              class="text-xs font-extrabold uppercase tracking-wider text-muted-foreground block"
+            >
               Review Body
             </label>
             <textarea
@@ -122,7 +138,6 @@ function handleSubmit() {
             />
           </div>
 
-          <!-- Actions -->
           <div class="flex items-center justify-end gap-3.5 pt-2">
             <button
               type="button"

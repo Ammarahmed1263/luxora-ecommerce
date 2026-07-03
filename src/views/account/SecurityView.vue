@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Eye, EyeOff, Shield, Loader2 } from 'lucide-vue-next'
-import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import { z } from 'zod'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { authService } from '@/services/api/auth.service'
 import { useToast } from '@/composables/useToast'
+import { changePasswordSchema } from '@/lib/validators'
+import { authService } from '@/services/api/auth.service'
+import { toTypedSchema } from '@vee-validate/zod'
+import { Eye, EyeOff, Loader2, Shield } from 'lucide-vue-next'
+import { useForm } from 'vee-validate'
+import { ref } from 'vue'
 
 const { toast } = useToast()
 const loading = ref(false)
@@ -15,16 +15,7 @@ const showCurrent = ref(false)
 const showNew = ref(false)
 const showConfirm = ref(false)
 
-const schema = toTypedSchema(z.object({
-  currentPassword: z.string().min(1, 'Required'),
-  newPassword: z.string().min(8, 'Min 8 characters'),
-  confirmPassword: z.string(),
-}).refine(d => d.newPassword === d.confirmPassword, {
-  message: 'Passwords do not match',
-  path: ['confirmPassword'],
-}))
-
-const form = useForm({ validationSchema: schema, initialValues: { currentPassword: '', newPassword: '', confirmPassword: '' } })
+const form = useForm({ validationSchema: toTypedSchema(changePasswordSchema), initialValues: { currentPassword: '', newPassword: '', confirmPassword: '' } })
 
 const onSubmit = form.handleSubmit(async (values) => {
   loading.value = true

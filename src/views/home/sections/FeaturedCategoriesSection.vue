@@ -3,20 +3,21 @@ import { RouterLink } from 'vue-router'
 import { ArrowRight } from '@lucide/vue'
 import CategoryCard from '@/components/common/product/CategoryCard.vue'
 import { Skeleton } from '@/components/ui/skeleton'
+import { computed } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import { categoriesService } from '@/services/api/products.service'
 
 const { data, isLoading } = useQuery({
   queryKey: ['categories', 'featured'],
-  queryFn: () => categoriesService.getAll({ featured: true, limit: 8 }),
+  queryFn: () => categoriesService.getAll({ isFeatured: true, limit: 8 }),
   staleTime: 5 * 60 * 1000,
 })
 
-const categories = () => data.value?.data.data.categories ?? []
+const categories = computed(() => data.value?.data.data.categories ?? [])
 </script>
 
 <template>
-  <section class="py-20 container mx-auto px-4 lg:px-8">
+  <section v-if="categories.length > 0 || isLoading" class="py-20 container mx-auto px-4 lg:px-8">
     <div class="flex items-end justify-between mb-10">
       <div>
         <p class="text-sm font-semibold text-primary/70 uppercase tracking-widest mb-2">Browse by</p>
@@ -36,8 +37,8 @@ const categories = () => data.value?.data.data.categories ?? []
       </template>
       <template v-else>
         <CategoryCard
-          v-for="category in categories()"
-          :key="category.id"
+          v-for="category in categories"
+          :key="category._id"
           :category="category"
         />
       </template>

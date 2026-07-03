@@ -10,7 +10,7 @@ export const productsService = {
     http.get<ApiResponse<{ product: Product }>>(`/products/${slug}`),
 
   getFeatured: () =>
-    http.get<ApiResponse<{ products: Product[] }>>('/products/featured'),
+    http.get<ApiResponse<{ products: Product[] }>>('/products', { params: { isFeatured: true } }),
 
   getReviews: (productId: string, params?: { page?: number; limit?: number; sort?: string }) =>
     http.get(`/products/${productId}/reviews`, { params }),
@@ -22,7 +22,7 @@ export const productsService = {
 }
 
 export const categoriesService = {
-  getAll: (params?: { featured?: boolean; parentId?: string; page?: number; limit?: number }) =>
+  getAll: (params?: { isFeatured?: boolean; parent?: string; page?: number; limit?: number }) =>
     http.get<PaginatedResponse<{ categories: Category[] }>>('/categories', { params }),
 
   getBySlug: (slug: string) =>

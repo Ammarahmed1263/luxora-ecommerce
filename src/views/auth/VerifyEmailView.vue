@@ -25,13 +25,11 @@ onMounted(async () => {
 <template>
   <div class="min-h-screen flex items-center justify-center gradient-hero p-6">
     <div class="w-full max-w-md text-center">
-      <!-- Loading -->
       <div v-if="status === 'loading'" class="flex flex-col items-center gap-4">
         <div class="w-16 h-16 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
         <p class="text-muted-foreground">Verifying your email…</p>
       </div>
 
-      <!-- Success -->
       <Transition name="fade">
         <div v-if="status === 'success'" class="flex flex-col items-center gap-6">
           <div class="w-20 h-20 rounded-full gradient-primary flex items-center justify-center shadow-lg">
@@ -50,7 +48,6 @@ onMounted(async () => {
         </div>
       </Transition>
 
-      <!-- Error -->
       <div v-if="status === 'error'" class="flex flex-col items-center gap-6">
         <div class="w-20 h-20 rounded-full bg-destructive/10 flex items-center justify-center">
           <XCircle :size="36" class="text-destructive" />
@@ -67,7 +64,6 @@ onMounted(async () => {
         </RouterLink>
       </div>
 
-      <!-- No token -->
       <div v-if="status === 'no-token'" class="flex flex-col items-center gap-6">
         <div class="w-20 h-20 rounded-full bg-muted flex items-center justify-center">
           <MailOpen :size="36" class="text-muted-foreground" />

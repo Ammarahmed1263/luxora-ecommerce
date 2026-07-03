@@ -14,16 +14,12 @@ const { data, isLoading, error } = useQuery({
 })
 
 const featuredProducts = computed(() => {
-  const backendProducts = data.value?.data.data.products
-  if (!backendProducts || backendProducts.length === 0) {
-    return dummyProducts.filter(p => p.isFeatured)
-  }
-  return backendProducts
+  return data.value?.data.data.products ?? []
 })
 </script>
 
 <template>
-  <section class="py-20 bg-muted/20 border-y border-border/40">
+  <section v-if="featuredProducts.length > 0 || isLoading" class="py-20 bg-muted/20 border-y border-border/40">
     <div class="container mx-auto px-4 lg:px-8">
       <div class="flex items-end justify-between mb-10">
         <div>
