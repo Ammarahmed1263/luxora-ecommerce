@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import AppNavbar from "@/components/layout/AppNavbar.vue";
 import AppFooter from "@/components/layout/AppFooter.vue";
@@ -8,34 +8,38 @@ import SortDropdown from "@/components/common/display/SortDropdown.vue";
 import FilterSidebar from "@/components/common/display/FilterSidebar.vue";
 import Pagination from "@/components/common/display/Pagination.vue";
 import SkeletonGrid from "@/components/common/display/SkeletonGrid.vue";
-import { dummyProducts } from "@/lib/dummyData";
+import { productsService } from "@/services/api/products.service";
+import type { Product } from "@/types/product.types";
 import { categoriesService } from "@/services/api/categories.service";
 import type { Category } from "@/types/product.types";
 
 const route = useRoute();
 const loading = ref(true);
-const sort = ref("popularity");
+const sort = ref<'popularity' | 'rating' | 'price_asc' | 'price_desc' | 'newest'>('popularity');
 const page = ref(1);
 const category = ref<Category | undefined>(undefined);
 
-const products = computed(() => {
-  let filtered = dummyProducts.filter(
-    (p) => p.category.slug === route.params.slug,
-  );
-  if (sort.value === "price_asc") filtered.sort((a, b) => a.price - b.price);
-  else if (sort.value === "price_desc")
-    filtered.sort((a, b) => b.price - a.price);
-  else if (sort.value === "rating")
-    filtered.sort((a, b) => b.rating.average - a.rating.average);
-  return filtered;
-});
-
-const totalPages = computed(() =>
-  Math.max(1, Math.ceil(products.value.length / 12)),
-);
+// Reactive state for real products
+const products = ref<Product[]>([]);
+const total = ref(0);
+const totalPages = computed(() => Math.max(1, Math.ceil(total.value / 12)));
 const paginatedProducts = computed(() =>
   products.value.slice((page.value - 1) * 12, page.value * 12),
 );
+
+async function fetchProducts() {
+  console.log("slug: ", route.params.slug)
+  const res = await productsService.getAll({
+    category: route.params.slug as string,
+    sort: sort.value,
+    page: page.value,
+    limit: 12,
+  });
+  products.value = res.data.data.products;
+  total.value = res.data.meta.total;
+}
+
+watch([sort, page], fetchProducts);
 
 onMounted(async () => {
   category.value = await categoriesService.getBySlug(
@@ -44,8 +48,11 @@ onMounted(async () => {
   if (category.value) {
     document.title = `${category.value.name} — Lumina`;
   }
+  await fetchProducts();
   loading.value = false;
 });
+
+
 </script>
 
 <template>

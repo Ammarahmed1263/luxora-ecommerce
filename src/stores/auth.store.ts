@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { authService } from '@/services/api/auth.service'
 import { usersService } from '@/services/api/users.service'
+import { useCartStore } from './cart.store'
+import { useWishlistStore } from './wishlist.store'
 import type { AuthUser, LoginPayload, RegisterPayload } from '@/types/auth.types'
 
 export const useAuthStore = defineStore('auth', () => {
@@ -18,6 +20,14 @@ export const useAuthStore = defineStore('auth', () => {
     token.value = accessToken
     user.value = authUser
     localStorage.setItem('access_token', accessToken)
+    // Eagerly fetch full profile + cart + wishlist so the app is hydrated immediately
+    const cartStore = useCartStore()
+    const wishlistStore = useWishlistStore()
+    await Promise.allSettled([
+      fetchMe(),
+      cartStore.fetchCart(),
+      wishlistStore.fetchWishlist(),
+    ])
   }
 
   async function register(payload: RegisterPayload) {

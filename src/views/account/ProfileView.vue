@@ -4,6 +4,7 @@ import { User, Camera, Loader2, Save } from "lucide-vue-next";
 import { useAuthStore } from "@/stores/auth.store";
 import { useToast } from "@/composables/useToast";
 import { usersService } from "@/services/api/users.service";
+import type { User as AppUser } from '@/types/auth.types';
 
 const authStore = useAuthStore();
 const { toast } = useToast();
@@ -12,7 +13,7 @@ const saving = ref(false);
 const form = ref({
   firstName: authStore.user?.firstName ?? "",
   lastName: authStore.user?.lastName ?? "",
-  phone: authStore.user?.phone ?? "",
+  phone: (authStore.user as AppUser | null)?.phone ?? "",
   address: {
     addressLine1: (authStore.user as any)?.address?.addressLine1 ?? "",
     city: (authStore.user as any)?.address?.city ?? "",

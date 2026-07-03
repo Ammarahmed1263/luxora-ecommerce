@@ -38,7 +38,7 @@ const categories = computed(() => data.value?.data.data.categories ?? [])
       <template v-else>
         <CategoryCard
           v-for="category in categories"
-          :key="category._id"
+          :key="category.id"
           :category="category"
         />
       </template>

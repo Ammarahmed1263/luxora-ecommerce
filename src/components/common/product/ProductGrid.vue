@@ -4,13 +4,15 @@ import SkeletonCard from '@/components/common/display/SkeletonCard.vue'
 import EmptyState from '@/components/common/feedback/EmptyState.vue'
 import type { Product } from '@/types/product.types'
 
-defineProps<{
+const props = defineProps<{
   products: Product[]
   loading?: boolean
   columns?: 2 | 3 | 4 | 5
   emptyTitle?: string
   emptyDescription?: string
 }>()
+
+console.log(props.products)
 </script>
 
 <template>
@@ -30,7 +32,7 @@ defineProps<{
       <template v-else-if="products.length > 0">
         <ProductCard
           v-for="product in products"
-          :key="product._id"
+          :key="product.id"
           :product="product"
         />
       </template>

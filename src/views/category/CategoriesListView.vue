@@ -55,7 +55,7 @@ onMounted(async () => {
             class="group relative aspect-square rounded-4xl overflow-hidden card-elevated card-hover border border-border/40 shadow-sm block bg-white"
           >
             <img
-              :src="cat.image"
+              :src="cat.image.url"
               :alt="cat.name"
               class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />

@@ -14,6 +14,7 @@ const props = defineProps<{
 const cartStore = useCartStore();
 const updating = ref(false);
 
+
 async function updateQty(qty: number) {
   if (updating.value) return;
   updating.value = true;
@@ -38,7 +39,7 @@ async function remove() {
         class="w-20 h-20 rounded-xl overflow-hidden bg-muted/30 border border-border/50"
       >
         <img
-          :src="item.product.thumbnail?.url"
+          :src="item.product.thumbnail.url"
           :alt="item.product.name"
           loading="lazy"
           class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"

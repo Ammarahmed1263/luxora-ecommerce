@@ -90,7 +90,7 @@ function getInitials(name: string) {
           </p>
         </div>
       </div>
-      <RatingComponent :rating="props.rating" :show-count="false" size="sm" />
+      <RatingComponent :average="props.rating" :show-count="false" size="sm" />
     </div>
 
     <p v-if="props.title" class="font-semibold text-foreground text-sm mb-1.5">

@@ -13,7 +13,7 @@ import { dummyProducts } from "@/lib/dummyData";
 
 const route = useRoute();
 const loading = ref(true);
-const sort = ref("popularity");
+const sort = ref<'popularity' | 'rating' | 'price_asc' | 'price_desc' | 'newest'>('popularity');
 const page = ref(1);
 
 const query = computed(() => (route.query.q as string) || "");

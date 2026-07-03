@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const brands = [
-  { name: 'Apple', logo: '' },
+  { name: 'Apple', logo: 'APPLE' },
   { name: 'Zara', logo: 'ZARA' },
   { name: 'Aesop', logo: 'Aesop' },
   { name: 'Nike', logo: 'NIKE' },

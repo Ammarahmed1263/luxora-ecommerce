@@ -38,7 +38,7 @@ const shippingForm = ref({
   postalCode: "",
 });
 
-const paymentMethod = ref<"stripe" | "paypal" | "cod">("stripe");
+const paymentMethod = ref<"stripe" | "cod">("stripe");
 
 async function placeOrder() {
   loading.value = true;
@@ -190,12 +190,6 @@ async function placeOrder() {
                       emoji: '💳',
                     },
                     {
-                      id: 'paypal',
-                      label: 'PayPal',
-                      desc: 'Fast and secure checkout',
-                      emoji: '🅿️',
-                    },
-                    {
                       id: 'cod',
                       label: 'Cash on Delivery',
                       desc: 'Pay when you receive',
@@ -287,19 +281,6 @@ async function placeOrder() {
                     />
                   </div>
                 </div>
-              </div>
-
-              <div
-                v-else-if="paymentMethod === 'paypal'"
-                class="mt-6 text-center animate-in fade-in duration-200"
-              >
-                <button
-                  type="button"
-                  class="w-full h-11 bg-[#FFC439] hover:bg-[#F2BA30] text-[#003087] rounded-full font-bold text-sm shadow-sm flex items-center justify-center gap-1.5 active:scale-98 transition-all"
-                >
-                  <span class="italic font-extrabold text-base">PayPal</span>
-                  <span>Checkout</span>
-                </button>
               </div>
 
               <div

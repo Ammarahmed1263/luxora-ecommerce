@@ -9,7 +9,7 @@ export const useWishlistStore = defineStore('wishlist', () => {
   const itemCount = ref(0)
   const loading = ref(false)
 
-  const productIds = computed(() => items.value.map((i) => i.product._id))
+  const productIds = computed(() => items.value.map((i) => i.product.id))
 
   function isInWishlist(productId: string) {
     return productIds.value.includes(productId)
@@ -42,7 +42,7 @@ export const useWishlistStore = defineStore('wishlist', () => {
       itemCount.value = res.data.data.itemCount
       await fetchWishlist()
     } catch {
-      items.value = items.value.filter((i) => i.product._id !== productId)
+      items.value = items.value.filter((i) => i.product.id !== productId)
       itemCount.value--
     }
   }
@@ -50,7 +50,7 @@ export const useWishlistStore = defineStore('wishlist', () => {
   async function removeItem(productId: string) {
     const prev = [...items.value]
     const prevCount = itemCount.value
-    items.value = items.value.filter((i) => i.product._id !== productId)
+    items.value = items.value.filter((i) => i.product.id !== productId)
     itemCount.value--
     try {
       const res = await wishlistService.removeItem(productId)
@@ -64,7 +64,7 @@ export const useWishlistStore = defineStore('wishlist', () => {
   async function moveToCart(productId: string) {
     const cartStore = useCartStore()
     await wishlistService.moveToCart(productId)
-    items.value = items.value.filter((i) => i.product._id !== productId)
+    items.value = items.value.filter((i) => i.product.id !== productId)
     itemCount.value--
     await cartStore.fetchCart()
   }

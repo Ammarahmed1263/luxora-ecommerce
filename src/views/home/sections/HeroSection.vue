@@ -58,7 +58,7 @@ const checklists = [
                 @keydown.enter="handleSearch"
                 type="text"
                 placeholder="Search headphones, wallets, mugs, face oil..."
-                class="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none py-2"
+                class="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none py-2 me-2"
               />
               <button
                 @click="handleSearch"

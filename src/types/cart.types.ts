@@ -1,10 +1,9 @@
-import type { Product } from './product.types'
 
 export interface CartProduct {
   id: string
   name: string
   slug: string
-  thumbnail: string
+  thumbnail: {url: string}
 }
 
 export interface CartItem {

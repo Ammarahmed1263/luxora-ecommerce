@@ -165,7 +165,7 @@ function handleReviewSubmit(review: {
               :images="
                 product.images.length
                   ? product.images
-                  : [{ url: product.thumbnail?.url, alt: product.name }]
+                  : [{ url: product.thumbnail?.url || product.images?.[0]?.url || '', alt: product.name }]
               "
               :product-name="product.name"
             />
@@ -212,7 +212,7 @@ function handleReviewSubmit(review: {
 
           <div class="flex items-center gap-2">
             <RatingComponent
-              :rating="product.rating.average"
+              :average="product.rating.average"
               :count="product.rating.count"
               show-count
             />
@@ -436,7 +436,7 @@ function handleReviewSubmit(review: {
                   ['Brand', product.vendor.storeName],
                   ['Category', product.category.name],
                   ['Stock', `${product.stock} units`],
-                  ['SKU', product._id],
+                  ['SKU', product.id],
                   ['Condition', product.condition || 'Good'],
                 ]"
                 :key="i"

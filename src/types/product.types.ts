@@ -9,13 +9,13 @@ export interface ProductImage extends CloudinaryImage {
 }
 
 export interface ProductCategory {
-  _id: string
+  id: string
   name: string
   slug: string
 }
 
 export interface ProductVendor {
-  _id: string
+  id: string
   storeName: string
   rating?: number
 }
@@ -27,7 +27,7 @@ export interface ProductRating {
 }
 
 export interface Product {
-  _id: string
+  id: string
   name: string
   slug: string
   description: string
@@ -49,7 +49,7 @@ export interface Product {
 }
 
 export interface Category {
-  _id: string
+  id: string
   name: string
   slug: string
   image: CloudinaryImage
@@ -61,7 +61,7 @@ export interface Category {
 }
 
 export interface CategoryChild {
-  _id: string
+  id: string
   name: string
   slug: string
   image: CloudinaryImage
