@@ -17,7 +17,7 @@ const route = useRoute();
 const router = useRouter();
 
 const loading = ref(false);
-const sort = ref("popularity");
+const sort = ref("newest");
 const page = ref(1);
 const filtersOpen = ref(false);
 
@@ -51,6 +51,7 @@ const fetchProducts = async () => {
       minPrice: priceMin.value > 0 ? priceMin.value : undefined,
       maxPrice: priceMax.value < 5000 ? priceMax.value : undefined,
       inStock: inStockOnly.value ? true : undefined,
+      minRating: selectedRating.value !== null ? selectedRating.value : undefined,
       category: selectedCategories.value.length ? selectedCategories.value.join(',') : undefined
     });
     
@@ -64,7 +65,7 @@ const fetchProducts = async () => {
   }
 };
 
-watch([page, sort, priceMin, priceMax, inStockOnly, selectedCategories], () => {
+watch([page, sort, priceMin, priceMax, selectedRating, inStockOnly, selectedCategories], () => {
   fetchProducts();
 });
 

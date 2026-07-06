@@ -3,8 +3,11 @@ import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Package, ChevronRight, Loader2 } from 'lucide-vue-next'
 import EmptyState from '@/components/common/feedback/EmptyState.vue'
+import { ordersService } from '@/services/api/orders.service'
+import type { Order } from '@/types/order.types'
 
 const loading = ref(true)
+const orders = ref<Order[]>([])
 
 const statusColor: Record<string, string> = {
   pending: 'bg-amber-100 text-amber-700',
@@ -14,15 +17,16 @@ const statusColor: Record<string, string> = {
   cancelled: 'bg-red-100 text-red-700',
 }
 
-const dummyOrders = [
-  { id: 'ord_001', orderNumber: 'ORD-20260115-7845', status: 'delivered', total: 449.98, itemCount: 2, createdAt: '2026-05-15T14:00:00Z' },
-  { id: 'ord_002', orderNumber: 'ORD-20260220-3321', status: 'shipped', total: 99.99, itemCount: 1, createdAt: '2026-06-20T10:00:00Z' },
-  { id: 'ord_003', orderNumber: 'ORD-20260625-1109', status: 'processing', total: 189.99, itemCount: 1, createdAt: '2026-06-25T08:00:00Z' },
-]
-
-onMounted(() => {
-  setTimeout(() => { loading.value = false }, 400)
+onMounted(async () => {
   document.title = 'My Orders - Luxora'
+  try {
+    const res = await ordersService.getAll()
+    orders.value = res.data.data.orders
+  } catch (error) {
+    console.error('Failed to fetch orders', error)
+  } finally {
+    loading.value = false
+  }
 })
 
 function formatDate(d: string) {
@@ -42,7 +46,7 @@ function formatDate(d: string) {
     </div>
 
     <EmptyState
-      v-else-if="!dummyOrders.length"
+      v-else-if="!orders.length"
       title="No orders yet"
       description="When you place your first order, it will appear here."
       action-label="Start Shopping"
@@ -51,7 +55,7 @@ function formatDate(d: string) {
 
     <div v-else class="space-y-3">
       <div
-        v-for="order in dummyOrders"
+        v-for="order in orders"
         :key="order.id"
         class="flex items-center justify-between gap-4 p-5 rounded-2xl border transition-all duration-200 hover:shadow-sm"
         style="border-color: oklch(0.88 0.008 85); background: oklch(0.975 0.006 85);"
@@ -62,12 +66,12 @@ function formatDate(d: string) {
           </div>
           <div>
             <p class="font-bold text-foreground text-sm">{{ order.orderNumber }}</p>
-            <p class="text-xs text-muted-foreground">{{ formatDate(order.createdAt) }} · {{ order.itemCount }} item{{ order.itemCount > 1 ? 's' : '' }}</p>
+            <p class="text-xs text-muted-foreground">{{ formatDate(order.createdAt) }} · {{ order.items?.length || 0 }} item{{ (order.items?.length || 0) !== 1 ? 's' : '' }}</p>
           </div>
         </div>
         <div class="flex items-center gap-4">
           <div>
-            <p class="font-bold text-foreground text-sm text-right">${{ order.total.toFixed(2) }}</p>
+            <p class="font-bold text-foreground text-sm text-right">${{ order.summary?.total?.toFixed(2) || '0.00' }}</p>
             <span class="inline-block px-2 py-0.5 rounded-full text-xs font-semibold capitalize mt-0.5" :class="statusColor[order.status]">
               {{ order.status }}
             </span>

@@ -4,6 +4,8 @@ import { useRoute, useRouter, RouterLink } from 'vue-router'
 import { Package, ChevronLeft, MapPin, Truck, Calendar, ShoppingBag, XCircle, CheckCircle2, Loader2 } from 'lucide-vue-next'
 import { useToast } from '@/composables/useToast'
 import PriceComponent from '@/components/common/commerce/PriceComponent.vue'
+import { ordersService } from '@/services/api/orders.service'
+import type { Order } from '@/types/order.types'
 
 const route = useRoute();
 const router = useRouter();
@@ -12,114 +14,26 @@ const { toast } = useToast();
 const orderId = computed(() => route.params.orderId as string);
 const loading = ref(true);
 
-// Mock orders database
-const ordersDb = ref<Record<string, any>>({
-  ord_001: {
-    id: "ord_001",
-    orderNumber: "ORD-20260115-7845",
-    status: "delivered",
-    createdAt: "2026-05-15T14:00:00Z",
-    shippingAddress: {
-      firstName: "Ali",
-      lastName: "Hassan",
-      addressLine1: "Room 402, Oak Residence",
-      city: "Stanford",
-      state: "CA",
-      postalCode: "94305",
-      country: "US",
-    },
-    items: [
-      {
-        id: "item_1",
-        name: "Sony WH-1000XM4 Headphones",
-        thumbnail:
-          "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=150&h=150&fit=crop",
-        price: 180.0,
-        quantity: 1,
-      },
-      {
-        id: "item_2",
-        name: "Calculus: Early Transcendentals (8th ed.)",
-        thumbnail:
-          "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=150&h=150&fit=crop",
-        price: 38.0,
-        quantity: 1,
-      },
-    ],
-    subtotal: 218.0,
-    shipping: 10.0,
-    discount: 15.0, // applied coupon
-    total: 213.0,
-  },
-  ord_002: {
-    id: "ord_002",
-    orderNumber: "ORD-20260220-3321",
-    status: "shipped",
-    createdAt: "2026-06-20T10:00:00Z",
-    shippingAddress: {
-      firstName: "Ali",
-      lastName: "Hassan",
-      addressLine1: "Room 402, Oak Residence",
-      city: "Stanford",
-      state: "CA",
-      postalCode: "94305",
-      country: "US",
-    },
-    items: [
-      {
-        id: "item_3",
-        name: "Vintage City Bike — Lavender",
-        thumbnail:
-          "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=150&h=150&fit=crop",
-        price: 250.0,
-        quantity: 1,
-      },
-    ],
-    subtotal: 250.0,
-    shipping: 25.0,
-    discount: 0.0,
-    total: 275.0,
-  },
-  ord_003: {
-    id: "ord_003",
-    orderNumber: "ORD-20260625-1109",
-    status: "pending",
-    createdAt: "2026-06-25T08:00:00Z",
-    shippingAddress: {
-      firstName: "Ali",
-      lastName: "Hassan",
-      addressLine1: "Room 402, Oak Residence",
-      city: "Stanford",
-      state: "CA",
-      postalCode: "94305",
-      country: "US",
-    },
-    items: [
-      {
-        id: "item_4",
-        name: "CS Society Hackathon Kit",
-        thumbnail:
-          "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=150&h=150&fit=crop",
-        price: 18.0,
-        quantity: 1,
-      },
-    ],
-    subtotal: 18.0,
-    shipping: 5.0,
-    discount: 0.0,
-    total: 23.0,
-  },
-});
+const order = ref<Order | null>(null);
 
-const order = computed(() => ordersDb.value[orderId.value]);
-
-onMounted(() => {
-  setTimeout(() => {
-    loading.value = false;
+onMounted(async () => {
+  try {
+    const res = await ordersService.getById(orderId.value);
+    order.value = res.data.data.order;
     if (order.value) {
       document.title = `Order ${order.value.orderNumber} - Luxora`;
     }
-  }, 350);
+  } catch (error) {
+    console.error("Failed to load order", error);
+    toast({
+      title: "Order not found",
+      description: "Could not load order details.",
+      variant: "destructive",
+    });
+    router.replace('/account/orders');
+  } finally {
+    loading.value = false;
+  }
 });
 
 function formatDate(d: string) {
@@ -313,7 +227,7 @@ function cancelOrder() {
           <div class="divide-y divide-border/35">
             <div
               v-for="item in order.items"
-              :key="item.id"
+              :key="(item as any)._id || item.id"
               class="flex items-center justify-between gap-4 py-4 first:pt-0 last:pb-0"
             >
               <div class="flex items-center gap-3.5">
@@ -338,7 +252,7 @@ function cancelOrder() {
                 </div>
               </div>
               <PriceComponent
-                :amount="item.price"
+                :amount="(item as any).unitPrice || item.price || 0"
                 class="text-sm font-bold text-foreground"
               />
             </div>
@@ -363,19 +277,19 @@ function cancelOrder() {
                 class="text-xs text-foreground font-semibold leading-relaxed"
               >
                 <p class="font-bold">
-                  {{ order.shippingAddress.firstName }}
-                  {{ order.shippingAddress.lastName }}
+                  {{ order.shippingAddress?.firstName }}
+                  {{ order.shippingAddress?.lastName }}
                 </p>
                 <p class="text-muted-foreground mt-0.5">
-                  {{ order.shippingAddress.addressLine1 }}
+                  {{ order.shippingAddress?.addressLine1 }}
                 </p>
                 <p class="text-muted-foreground">
-                  {{ order.shippingAddress.city }},
-                  {{ order.shippingAddress.state }}
-                  {{ order.shippingAddress.postalCode }}
+                  {{ order.shippingAddress?.city }},
+                  {{ order.shippingAddress?.state }}
+                  {{ order.shippingAddress?.postalCode }}
                 </p>
                 <p class="text-muted-foreground">
-                  {{ order.shippingAddress.country }}
+                  {{ order.shippingAddress?.country }}
                 </p>
               </div>
             </div>
@@ -394,27 +308,34 @@ function cancelOrder() {
                 class="flex justify-between font-semibold text-muted-foreground"
               >
                 <span>Subtotal</span>
-                <span>${{ order.subtotal.toFixed(2) }}</span>
+                <span>${{ order.summary?.subtotal?.toFixed(2) || '0.00' }}</span>
               </div>
               <div
                 class="flex justify-between font-semibold text-muted-foreground"
               >
                 <span>Shipping</span>
-                <span>${{ order.shipping.toFixed(2) }}</span>
+                <span>${{ order.summary?.shipping?.toFixed(2) || '0.00' }}</span>
               </div>
               <div
-                v-if="order.discount > 0"
+                v-if="(order.summary?.discount || 0) > 0"
                 class="flex justify-between font-semibold text-emerald-600"
               >
                 <span>Discount (Coupon)</span>
-                <span>-${{ order.discount.toFixed(2) }}</span>
+                <span>-${{ order.summary?.discount?.toFixed(2) || '0.00' }}</span>
+              </div>
+              <div
+                v-if="(order.summary?.pointsDiscount || 0) > 0"
+                class="flex justify-between font-semibold text-primary"
+              >
+                <span>Loyalty Points ({{ order.pointsUsed }})</span>
+                <span>-${{ order.summary?.pointsDiscount?.toFixed(2) || '0.00' }}</span>
               </div>
               <div class="h-px bg-border/40 my-2" />
               <div
                 class="flex justify-between text-sm font-extrabold text-foreground"
               >
                 <span>Total Amount</span>
-                <span class="text-primary">${{ order.total.toFixed(2) }}</span>
+                <span class="text-primary">${{ order.summary?.total?.toFixed(2) || '0.00' }}</span>
               </div>
             </div>
           </div>

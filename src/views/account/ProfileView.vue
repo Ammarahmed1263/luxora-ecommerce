@@ -88,8 +88,8 @@ function getInitials() {
           <Camera :size="20" class="text-white" />
         </button>
       </div>
-      <div>
-        <p class="font-bold text-foreground">
+      <div class="flex-1">
+        <p class="font-bold text-foreground text-lg">
           {{ authStore.user?.firstName }} {{ authStore.user?.lastName }}
         </p>
         <p class="text-sm text-muted-foreground">{{ authStore.user?.email }}</p>
@@ -99,6 +99,16 @@ function getInitials() {
         >
           Change avatar
         </button>
+      </div>
+      
+      <div 
+        class="hidden sm:flex flex-col items-end justify-center px-6 py-3 rounded-xl border border-primary/20 bg-primary/5"
+      >
+        <span class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Loyalty Points</span>
+        <div class="flex items-baseline gap-1.5">
+          <span class="text-2xl font-black text-primary">{{ authStore.user?.rewardPoints || 0 }}</span>
+          <span class="text-sm font-semibold text-primary">pts</span>
+        </div>
       </div>
     </div>
 

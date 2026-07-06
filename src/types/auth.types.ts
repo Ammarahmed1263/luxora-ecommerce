@@ -8,6 +8,7 @@ export interface User {
   role: 'customer' | 'seller' | 'admin'
   isEmailVerified: boolean
   address?: Address
+  rewardPoints?: number
   createdAt: string
   updatedAt: string
 }
@@ -31,6 +32,7 @@ export interface AuthUser {
   isEmailVerified: boolean
   phone?: string
   address?: Address
+  rewardPoints?: number
 }
 
 export interface LoginPayload {

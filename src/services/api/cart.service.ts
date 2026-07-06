@@ -26,4 +26,10 @@ export const cartService = {
 
   removeCoupon: () =>
     http.delete<ApiResponse<{ cart: Cart }>>('/cart/coupon'),
+
+  applyPoints: (points: number) =>
+    http.post<ApiResponse<{ cart: Cart }>>('/cart/points', { points }),
+
+  removePoints: () =>
+    http.delete<ApiResponse<{ cart: Cart }>>('/cart/points'),
 }

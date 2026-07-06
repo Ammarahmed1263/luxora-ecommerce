@@ -43,6 +43,24 @@ export const dashboardRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/dashboard/AnalyticsView.vue'),
         meta: { title: 'Analytics', requiresAdmin: true },
       },
+      {
+        path: 'categories',
+        name: 'admin-categories',
+        component: () => import('@/views/dashboard/CategoriesView.vue'),
+        meta: { title: 'Manage Categories', requiresAdmin: true },
+      },
+      {
+        path: 'coupons',
+        name: 'admin-coupons',
+        component: () => import('@/views/dashboard/CouponsView.vue'),
+        meta: { title: 'Manage Coupons', requiresAdmin: true },
+      },
+      {
+        path: 'newsletters',
+        name: 'admin-newsletters',
+        component: () => import('@/views/dashboard/NewslettersView.vue'),
+        meta: { title: 'Newsletter Subscribers', requiresAdmin: true },
+      },
     ],
   },
   {

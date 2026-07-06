@@ -15,6 +15,9 @@ import {
   Bell,
   Settings,
   ExternalLink,
+  Tag,
+  Ticket,
+  Mail,
 } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth.store'
 
@@ -27,6 +30,9 @@ const navItems = [
   { label: 'Overview', to: '/admin/overview', icon: LayoutDashboard },
   { label: 'Users', to: '/admin/users', icon: Users },
   { label: 'Products', to: '/admin/products', icon: Package },
+  { label: 'Categories', to: '/admin/categories', icon: Tag },
+  { label: 'Coupons', to: '/admin/coupons', icon: Ticket },
+  { label: 'Newsletters', to: '/admin/newsletters', icon: Mail },
   { label: 'Orders', to: '/admin/orders', icon: ShoppingBag },
   { label: 'Vendors', to: '/admin/vendors', icon: Store },
   { label: 'Analytics', to: '/admin/analytics', icon: BarChart3 },

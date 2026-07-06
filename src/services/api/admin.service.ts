@@ -145,6 +145,11 @@ export const sellerService = {
     }
   },
 
+  updateOrderStatus: async (_vendorId: string, orderId: string, status: string): Promise<any> => {
+    const res = await http.patch(`/vendors/dashboard/orders/${orderId}/status`, { status })
+    return res.data
+  },
+
   addProduct: async (_vendorId: string, payload: {
     name: string
     price: number

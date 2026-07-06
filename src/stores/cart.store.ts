@@ -68,9 +68,19 @@ export const useCartStore = defineStore('cart', () => {
     cart.value = res.data.data.cart
   }
 
+  async function applyPoints(points: number) {
+    const res = await cartService.applyPoints(points)
+    cart.value = res.data.data.cart
+  }
+
+  async function removePoints() {
+    const res = await cartService.removePoints()
+    cart.value = res.data.data.cart
+  }
+
   return {
     cart, loading, items, summary, coupon, itemCount, guestCartId,
     fetchCart, addItem, updateItem, removeItem, clearCart, mergeGuestCart,
-    applyCoupon, removeCoupon,
+    applyCoupon, removeCoupon, applyPoints, removePoints,
   }
 })

@@ -19,6 +19,18 @@ const sort = ref<'popularity' | 'rating' | 'price_asc' | 'price_desc' | 'newest'
 const page = ref(1);
 const category = ref<Category | undefined>(undefined);
 
+const priceMin = ref(0);
+const priceMax = ref(5000);
+const selectedRating = ref<number | null>(null);
+const inStockOnly = ref(false);
+
+function resetFilters() {
+  priceMin.value = 0;
+  priceMax.value = 5000;
+  selectedRating.value = null;
+  inStockOnly.value = false;
+}
+
 // Reactive state for real products
 const products = ref<Product[]>([]);
 const total = ref(0);
@@ -34,12 +46,16 @@ async function fetchProducts() {
     sort: sort.value,
     page: page.value,
     limit: 12,
+    minPrice: priceMin.value > 0 ? priceMin.value : undefined,
+    maxPrice: priceMax.value < 5000 ? priceMax.value : undefined,
+    inStock: inStockOnly.value ? true : undefined,
+    minRating: selectedRating.value !== null ? selectedRating.value : undefined,
   });
   products.value = res.data.data.products;
   total.value = res.data.meta.total;
 }
 
-watch([sort, page], fetchProducts);
+watch([sort, page, priceMin, priceMax, selectedRating, inStockOnly], fetchProducts);
 
 onMounted(async () => {
   category.value = await categoriesService.getBySlug(
@@ -83,7 +99,13 @@ onMounted(async () => {
     <main class="container mx-auto px-4 lg:px-8 py-10">
       <div class="flex gap-8">
         <div class="hidden lg:block">
-          <FilterSidebar />
+          <FilterSidebar 
+            v-model:priceMin="priceMin"
+            v-model:priceMax="priceMax"
+            v-model:selectedRating="selectedRating"
+            v-model:inStockOnly="inStockOnly"
+            @reset="resetFilters"
+          />
         </div>
 
         <div class="flex-1 min-w-0">

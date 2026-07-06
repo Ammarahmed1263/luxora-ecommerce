@@ -22,6 +22,7 @@ export interface OrderSummary {
   shipping: number
   tax: number
   discount: number
+  pointsDiscount?: number
   total: number
   currency: string
 }
@@ -53,6 +54,7 @@ export interface Order {
   trackingNumber?: string
   carrier?: string
   coupon?: OrderCoupon
+  pointsUsed?: number
   notes?: string
   createdAt: string
 }

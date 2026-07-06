@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { SlidersHorizontal, X, Star } from "lucide-vue-next";
-import { dummyCategories } from "@/lib/dummyData";
+import { useQuery } from '@tanstack/vue-query';
+import { categoriesService } from '@/services/api/products.service';
 
 interface Props {
   selectedCategories?: string[];
@@ -47,6 +48,14 @@ const hasActiveFilters = computed(
     props.priceMin > 0 ||
     props.priceMax < 5000,
 );
+
+const { data: categoriesData, isLoading: categoriesLoading } = useQuery({
+  queryKey: ['categories'],
+  queryFn: () => categoriesService.getAll({ limit: 100 }),
+  staleTime: 5 * 60 * 1000,
+});
+
+const categoriesList = computed(() => categoriesData.value?.data.data.categories ?? []);
 </script>
 
 <template>
@@ -74,20 +83,25 @@ const hasActiveFilters = computed(
         Category
       </h3>
       <div class="flex flex-col gap-1">
-        <button
-          v-for="cat in dummyCategories"
-          :key="cat.slug"
-          @click="toggleCategory(cat.slug)"
-          class="w-full flex items-center justify-between px-3.5 py-2.5 text-sm rounded-xl transition-all duration-150 text-left font-medium"
-          :class="
-            props.selectedCategories.includes(cat.slug)
-              ? 'bg-primary/10 text-primary font-bold'
-              : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-          "
-        >
-          <span>{{ cat.name }}</span>
-          <span class="text-xs opacity-75">{{ cat.productCount }}</span>
-        </button>
+        <template v-if="categoriesLoading">
+          <div v-for="i in 5" :key="i" class="w-full h-10 rounded-xl bg-muted/40 animate-pulse"></div>
+        </template>
+        <template v-else>
+          <button
+            v-for="cat in categoriesList"
+            :key="cat.slug"
+            @click="toggleCategory(cat.slug)"
+            class="w-full flex items-center justify-between px-3.5 py-2.5 text-sm rounded-xl transition-all duration-150 text-left font-medium"
+            :class="
+              props.selectedCategories.includes(cat.slug)
+                ? 'bg-primary/10 text-primary font-bold'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+            "
+          >
+            <span>{{ cat.name }}</span>
+            <span class="text-xs opacity-75">{{ cat.productCount || 0 }}</span>
+          </button>
+        </template>
       </div>
     </div>
 

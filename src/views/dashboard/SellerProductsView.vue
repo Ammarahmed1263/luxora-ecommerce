@@ -28,7 +28,7 @@ const formStock = ref(0)
 const formCategory = ref('Electronics')
 const formThumbnail = ref('')
 
-const CATEGORIES = ['Electronics', 'Fashion', 'Books', 'Sports', 'Home & Garden', 'Beauty', 'Toys', 'Automotive']
+const CATEGORIES = ['Electronics', 'Fashion & Apparel', 'Books & Media', 'Sports & Outdoors', 'Home & Living', 'Beauty & Care', 'Toys & Games', 'Automotive']
 
 async function fetchProducts(showSpinner = true) {
   if (showSpinner) {
@@ -188,7 +188,7 @@ function formatCurrency(n: number) {
                   </div>
                   <div class="min-w-0">
                     <p class="text-sm font-semibold truncate" style="color: oklch(0.14 0.02 280);">{{ prod.name }}</p>
-                    <p class="text-xs" style="color: oklch(0.52 0.015 285);">{{ prod.category.name }}</p>
+                    <p class="text-xs" style="color: oklch(0.52 0.015 285);">{{ prod.category?.name || 'Uncategorized' }}</p>
                   </div>
                 </div>
               </td>

@@ -2,8 +2,11 @@
 import { RouterLink } from 'vue-router'
 import { CheckCircle, Package, ArrowRight } from 'lucide-vue-next'
 import AppNavbar from '@/components/layout/AppNavbar.vue'
+import { useRoute } from 'vue-router'
 
-const orderNumber = `ORD-${Date.now().toString().slice(-8)}`
+const route = useRoute()
+const orderNumber = route.query.orderNumber as string || `ORD-${Date.now().toString().slice(-8)}`
+const orderId = route.query.orderId as string || ''
 </script>
 
 <template>
@@ -40,7 +43,7 @@ const orderNumber = `ORD-${Date.now().toString().slice(-8)}`
 
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
           <RouterLink
-            to="/account/orders"
+            :to="orderId ? `/account/orders/${orderId}` : '/account/orders'"
             class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm"
             style="background: linear-gradient(135deg, oklch(0.32 0.09 295), oklch(0.45 0.12 280));"
           >

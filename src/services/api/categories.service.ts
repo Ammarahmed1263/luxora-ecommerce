@@ -24,5 +24,16 @@ export const categoriesService = {
     } catch {
       return undefined
     }
+  },
+  create: async (payload: Partial<Category>): Promise<Category> => {
+    const res = await http.post<ApiResponse<{ category: Category }>>('/categories', payload)
+    return res.data.data.category
+  },
+  update: async (slug: string, payload: Partial<Category>): Promise<Category> => {
+    const res = await http.patch<ApiResponse<{ category: Category }>>(`/categories/${slug}`, payload)
+    return res.data.data.category
+  },
+  delete: async (slug: string): Promise<void> => {
+    await http.delete(`/categories/${slug}`)
   }
 }

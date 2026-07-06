@@ -30,6 +30,21 @@ export const useAuthStore = defineStore('auth', () => {
     ])
   }
 
+  async function googleLogin(payload: { credential: string, role?: 'customer' | 'seller', storeName?: string }) {
+    const res = await authService.googleLogin(payload)
+    const { accessToken, user: authUser } = res.data.data
+    token.value = accessToken
+    user.value = authUser
+    localStorage.setItem('access_token', accessToken)
+    const cartStore = useCartStore()
+    const wishlistStore = useWishlistStore()
+    await Promise.allSettled([
+      fetchMe(),
+      cartStore.fetchCart(),
+      wishlistStore.fetchWishlist(),
+    ])
+  }
+
   async function register(payload: RegisterPayload) {
     const res = await authService.register(payload)
     return res.data
@@ -64,5 +79,10 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('access_token')
   }
 
-  return { token, user, isAuthenticated, isAdmin, isSeller, login, register, logout, fetchMe, clearAuth }
+  async function resendVerification(email: string) {
+    const res = await authService.resendVerification(email)
+    return res.data
+  }
+
+  return { token, user, isAuthenticated, isAdmin, isSeller, login, googleLogin, register, logout, fetchMe, clearAuth, resendVerification }
 })

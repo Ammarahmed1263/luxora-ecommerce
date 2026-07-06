@@ -25,6 +25,7 @@ export interface CartSummary {
   tax: number
   discount: number
   couponDiscount: number
+  pointsDiscount: number
   total: number
   currency: string
   itemCount: number
@@ -35,6 +36,7 @@ export interface Cart {
   items: CartItem[]
   summary: CartSummary
   coupon: CartCoupon | null
+  pointsUsed?: number
 }
 
 export interface WishlistProduct {

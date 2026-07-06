@@ -21,6 +21,29 @@ const { toast } = useToast();
 const couponCode = ref("");
 const applyingCoupon = ref(false);
 
+const authStore = useAuthStore();
+const pointsToApply = ref<number | "">("");
+const applyingPoints = ref(false);
+
+async function applyPoints() {
+  const pts = typeof pointsToApply.value === 'string' ? parseInt(pointsToApply.value) : pointsToApply.value;
+  if (!pts || applyingPoints.value) return;
+  applyingPoints.value = true;
+  try {
+    await cartStore.applyPoints(pts);
+    pointsToApply.value = "";
+    toast({ title: "Points applied!", variant: "success" });
+  } catch (err: any) {
+    toast({ title: err.response?.data?.message || "Failed to apply points", variant: "destructive" });
+  } finally {
+    applyingPoints.value = false;
+  }
+}
+
+async function removePoints() {
+  await cartStore.removePoints();
+}
+
 async function applyCoupon() {
   if (!couponCode.value.trim() || applyingCoupon.value) return;
   applyingCoupon.value = true;
@@ -78,6 +101,18 @@ async function removeCoupon() {
           <PriceComponent :amount="cartStore.summary.couponDiscount" size="sm"
         /></span>
       </div>
+      <div
+        v-if="cartStore.summary.pointsDiscount && cartStore.summary.pointsDiscount > 0"
+        class="flex justify-between text-primary font-medium"
+      >
+        <span class="flex items-center gap-1.5">
+          Loyalty Points ({{ cartStore.cart?.pointsUsed }})
+        </span>
+        <span
+          >-
+          <PriceComponent :amount="cartStore.summary.pointsDiscount" size="sm"
+        /></span>
+      </div>
     </div>
 
     <Separator />
@@ -119,6 +154,48 @@ async function removeCoupon() {
       >
         <X :size="14" />
       </button>
+    </div>
+
+    <!-- Loyalty Points Section -->
+    <div v-if="authStore.user" class="pt-1">
+      <div v-if="!(cartStore.cart?.pointsUsed && cartStore.cart?.pointsUsed > 0)">
+        <div class="flex justify-between text-sm mb-2">
+          <span class="text-muted-foreground">Available Points</span>
+          <span class="font-bold text-primary">{{ authStore.user.rewardPoints || 0 }}</span>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <input
+            v-model="pointsToApply"
+            @keydown.enter="applyPoints"
+            type="number"
+            min="1"
+            :max="authStore.user.rewardPoints || 0"
+            placeholder="Points to use"
+            class="flex-1 px-3 py-2 text-sm rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+          />
+          <button
+            @click="applyPoints"
+            :disabled="applyingPoints || !pointsToApply || Number(pointsToApply) <= 0 || Number(pointsToApply) > (authStore.user.rewardPoints || 0)"
+            class="lg:flex-1 xl:flex-none px-4 py-2 text-sm font-semibold rounded-xl bg-primary text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150"
+          >
+            {{ applyingPoints ? "…" : "Redeem" }}
+          </button>
+        </div>
+      </div>
+      <div
+        v-else
+        class="flex items-center justify-between p-3 rounded-xl border border-primary/20 bg-primary/5 text-sm"
+      >
+        <span class="flex items-center gap-2 text-primary font-medium">
+          {{ cartStore.cart.pointsUsed }} points applied
+        </span>
+        <button
+          @click="removePoints"
+          class="text-primary hover:text-primary/70 transition-colors"
+        >
+          <X :size="14" />
+        </button>
+      </div>
     </div>
 
     <slot name="actions" />

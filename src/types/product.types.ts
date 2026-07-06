@@ -73,6 +73,7 @@ export interface ProductListParams {
   category?: string
   minPrice?: number
   maxPrice?: number
+  minRating?: number
   inStock?: boolean
   featured?: boolean
   sort?: 'price_asc' | 'price_desc' | 'newest' | 'rating' | 'popularity'

@@ -23,6 +23,9 @@ export const authService = {
   resendVerification: (email: string) =>
     http.post<ApiResponse<null>>('/auth/resend-verification', { email }),
 
+  googleLogin: (payload: { credential: string, role?: 'customer' | 'seller', storeName?: string }) =>
+    http.post<ApiResponse<LoginResponse>>('/auth/google', payload),
+
   changePassword: (payload: ChangePasswordPayload) =>
     http.patch<ApiResponse<null>>('/users/password', payload),
 }

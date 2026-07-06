@@ -65,12 +65,17 @@ async function placeOrder() {
       });
       window.location.href = res.data.data.url;
     } else {
-      await ordersService.place({
+      const res = await ordersService.place({
         paymentMethod: "cash_on_delivery",
         shippingAddress: address,
       });
       cartStore.clearCart();
-      router.push({ name: "order-success" });
+      const newOrder = res.data?.data?.order;
+      if (newOrder) {
+        router.push({ name: "order-success", query: { orderId: newOrder.id || (newOrder as any)._id, orderNumber: newOrder.orderNumber } });
+      } else {
+        router.push({ name: "order-success" });
+      }
     }
   } catch (error: any) {
     console.error("Order placement failed:", error);
