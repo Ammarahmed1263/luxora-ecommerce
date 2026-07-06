@@ -618,33 +618,8 @@ const benefits = [
             </button>
           </form>
 
-          <div class="mt-4">
-            <GoogleLogin :callback="onGoogleLogin">
-              <button
-                type="button"
-                class="w-full flex items-center justify-center gap-2.5 h-12 rounded-xl bg-white border border-border text-foreground hover:bg-muted/50 font-semibold text-sm transition-all duration-150 active:scale-98 shadow-sm"
-              >
-                <svg class="h-5 w-5" viewBox="0 0 24 24">
-                  <path
-                    fill="#EA4335"
-                    d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.48 14.98 1 12 1 7.24 1 3.2 3.73 1.24 7.73l3.88 3c.92-2.77 3.5-4.69 6.88-4.69z"
-                  />
-                  <path
-                    fill="#4285F4"
-                    d="M23.49 12.27c0-.81-.07-1.59-.2-2.27H12v4.51h6.45c-.28 1.46-1.1 2.69-2.33 3.51l3.62 2.81c2.12-1.95 3.75-4.82 3.75-8.58z"
-                  />
-                  <path
-                    fill="#FBBC05"
-                    d="M5.12 10.73c-.23-.69-.36-1.43-.36-2.23s.13-1.54.36-2.23l-3.88-3C.47 5.09 0 6.74 0 8.5s.47 3.41 1.24 5.23l3.88-3z"
-                  />
-                  <path
-                    fill="#34A853"
-                    d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.62-2.81c-1.1.74-2.51 1.18-4.34 1.18-3.38 0-5.96-1.92-6.88-4.69l-3.88 3C3.2 20.27 7.24 23 12 23z"
-                  />
-                </svg>
-                <span>Continue with Google</span>
-              </button>
-            </GoogleLogin>
+          <div class="mt-4 flex justify-center w-full">
+            <GoogleLogin :callback="onGoogleLogin" prompt />
           </div>
         </template>
       </div>
